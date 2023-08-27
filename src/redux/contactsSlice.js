@@ -1,36 +1,61 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const contactsInitialState = {
+  items: [],
+  isLoading: false,
+  error: null,
+};
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: initializeContactsFromLS(),
+  initialState: contactsInitialState,
   reducers: {
-    addContact(state, action) {
-      const contacts = [...state, action.payload];
-      localStorage.setItem('My-Contacts', JSON.stringify(contacts));
-      return (state = contacts);
+    fetchingInProgress(state) {
+      state.isLoading = true;
     },
-    deleteContact(state, action) {
-      const contacts = state.filter(contact => contact.id !== action.payload);
-      localStorage.setItem('My-Contacts', JSON.stringify(contacts));
-      return (state = contacts);
+    fetchingSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items = action.payload;
     },
+    fetchingError(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    // addingInProgress(state) {
+    //   state.isLoading = true;
+    // },
+    addingSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items = [...state.items, action.payload];
+    },
+    // addingError(state, action) {
+    //   state.isLoading = false;
+    //   state.error = action.payload;
+    // },
+    // deletingInProgress(state) {
+    //   state.isLoading = true;
+    // },
+    deletingSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items = state.items.filter(
+        contact => contact.id !== action.payload
+      );
+    },
+    // deletingError(state, action) {
+    //   state.isLoading = false;
+    //   state.error = action.payload;
+    // },
   },
 });
 
-function initializeContactsFromLS() {
-  const contactsFromLS = localStorage.getItem('My-Contacts');
-  console.log('contactsFromLS', contactsFromLS);
-
-  try {
-    const parsedContacts = JSON.parse(contactsFromLS) || [];
-    console.log('parsedContacts', parsedContacts);
-
-    return parsedContacts;
-  } catch (error) {
-    console.log('error', error);
-    return [];
-  }
-}
-
-export const { addContact, deleteContact } = contactsSlice.actions;
+// export const { addContact, deleteContact } = contactsSlice.actions;
+export const {
+  fetchingInProgress,
+  fetchingSuccess,
+  fetchingError,
+  addingSuccess,
+  deletingSuccess,
+} = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;
