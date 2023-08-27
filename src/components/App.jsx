@@ -23,7 +23,11 @@ export const App = () => {
         color: '#010101',
       }}
     >
-      {isLoading && <b style={{ color: 'white' }}>Loading contacts...</b>}
+      {isLoading && (
+        <b style={({ color: 'white' }, { fontSize: '56' })}>
+          Loading contacts...
+        </b>
+      )}
 
       <h1>Phonebook</h1>
       <ContactForm />

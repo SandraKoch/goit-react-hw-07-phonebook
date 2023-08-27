@@ -5,6 +5,10 @@ import {
   fetchingError,
   addingSuccess,
   deletingSuccess,
+  addingInProgress,
+  addingError,
+  deletingInProgress,
+  deletingError,
 } from './contactsSlice';
 import { nanoid } from '@reduxjs/toolkit';
 
@@ -25,6 +29,7 @@ export const addNewContact =
   ({ name, phone }) =>
   async dispatch => {
     try {
+      dispatch(addingInProgress());
       const newContact = {
         name,
         phone,
@@ -33,15 +38,16 @@ export const addNewContact =
       await axios.post('/contacts', newContact);
       dispatch(addingSuccess(newContact));
     } catch (error) {
-      return error.message;
+      dispatch(addingError(error.message));
     }
   };
 
 export const deleteContact = id => async dispatch => {
   try {
+    dispatch(deletingInProgress());
     await axios.delete(`/contacts/${id}`);
     dispatch(deletingSuccess(id));
   } catch (error) {
-    return error.message;
+    dispatch(deletingError(error.message));
   }
 };

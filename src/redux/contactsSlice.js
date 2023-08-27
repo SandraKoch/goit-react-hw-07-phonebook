@@ -21,21 +21,21 @@ const contactsSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-    // addingInProgress(state) {
-    //   state.isLoading = true;
-    // },
+    addingInProgress(state) {
+      state.isLoading = true;
+    },
     addingSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
       state.items = [...state.items, action.payload];
     },
-    // addingError(state, action) {
-    //   state.isLoading = false;
-    //   state.error = action.payload;
-    // },
-    // deletingInProgress(state) {
-    //   state.isLoading = true;
-    // },
+    addingError(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    deletingInProgress(state) {
+      state.isLoading = true;
+    },
     deletingSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
@@ -43,19 +43,22 @@ const contactsSlice = createSlice({
         contact => contact.id !== action.payload
       );
     },
-    // deletingError(state, action) {
-    //   state.isLoading = false;
-    //   state.error = action.payload;
-    // },
+    deletingError(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
   },
 });
 
-// export const { addContact, deleteContact } = contactsSlice.actions;
 export const {
   fetchingInProgress,
   fetchingSuccess,
   fetchingError,
+  addingInProgress,
   addingSuccess,
+  addingError,
+  deletingInProgress,
   deletingSuccess,
+  deletingError,
 } = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;
